@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<link rel="stylesheet" href="css/app.css">
+</head>
+<body>
+	<div class="container" ng-controller="mainController">
+		<div class="jumbotron text-center"><h1>Investimentos</h1></div>
+		<div class="row">
+			<div class="col-md-2">
+				<label for="">tempo de investimento</label>
+				<select name="" id="" class="form-control col-md-2" ng-model="dateSelected" ng-change="calculateChartValues()" ng-options="d.months as d.days for d in dayList"></select>
+			</div>
+			<div class="col-md-2">
+				<label for="">valor investido</label>
+				<input type="text" class="form-control" ng-model="investedValue" ng-change="calculateChartValues()">
+			</div>
+		</div>
+		
+		<div id="myChart" class="col-md-4"></div>
+
+		<div class="div-chart col-md-6 col-md-offset-2">
+			<table id="q-graph">
+				<tbody>
+					<tr class="qtr" >
+						<td ng-repeat="b in barList" id="q{{$index+1}}" class="sent bar" style="height:{{b.height}}px;"><p>R${{b.value}}</p></td>						
+					</tr>				
+				</tbody>
+			</table>
+			<div id="ticks">
+				<div class="tick" ng-repeat="r in rowchartList" style="height: {{rowchart}}px;"><p>${{r.value}}</p></div>
+			</div>
+		</div>
+		
+
+		<table class="table table-bordered table-striped" ng-init="sortType = 'currentInterestRate'; sortReverse = !sortReverse ">
+            <thead>
+                <tr>
+                    <td>
+                        <a  ng-click="sortType = 'name'; sortReverse = !sortReverse">
+                            Título
+                            <span ng-show="sortType == 'name' && !sortReverse" class="glyphicon glyphicon-triangle-bottom"></span>
+                            <span ng-show="sortType == 'name' && sortReverse" class="glyphicon glyphicon-triangle-top"></span>
+                          </a>
+                    </td>
+                    <td>
+                        <a ng-click="sortType = 'type'; sortReverse = !sortReverse">
+                            Tipo 
+                            <span ng-show="sortType == 'type.name' && !sortReverse" class="glyphicon glyphicon-triangle-bottom"></span>
+                            <span ng-show="sortType == 'type.name' && sortReverse" class="glyphicon glyphicon-triangle-top"></span>
+                          </a>
+                    </td>
+                    <td>
+                        <a  ng-click="sortType = 'maturityDate'; sortReverse = !sortReverse">
+                            Vencimento 
+                            <span ng-show="sortType == 'maturityDate' && !sortReverse" class="glyphicon glyphicon-triangle-bottom"></span>
+                            <span ng-show="sortType == 'maturityDate' && sortReverse" class="glyphicon glyphicon-triangle-top"></span>
+                          </a>
+                    </td>
+                    <td>
+                        <a  ng-click="sortType = 'index.name'; sortReverse = !sortReverse">
+                            Indice 
+                            <span ng-show="sortType == 'index.name' && !sortReverse" class="glyphicon glyphicon-triangle-bottom"></span>
+                            <span ng-show="sortType == 'index.name' && sortReverse" class="glyphicon glyphicon-triangle-top"></span>
+                          </a>
+                    </td>
+                    <td>
+                        <a  ng-click="sortType = 'value'; sortReverse = !sortReverse">
+                            Valor 
+                            <span ng-show="sortType == 'value' && !sortReverse" class="glyphicon glyphicon-triangle-bottom"></span>
+                            <span ng-show="sortType == 'value' && sortReverse" class="glyphicon glyphicon-triangle-top"></span>
+                          </a>
+                    </td>
+                    <td>
+                        <a  ng-click="sortType = 'currentInterestRate'; sortReverse = !sortReverse">
+                            Rentabilidade (anual) 
+                            <span ng-show="sortType == 'currentInterestRate' && !sortReverse" class="glyphicon glyphicon-triangle-bottom"></span>
+                            <span ng-show="sortType == 'currentInterestRate' && sortReverse" class="glyphicon glyphicon-triangle-top"></span>
+                          </a>
+                    </td>
+                    <td>
+                        <a  ng-click="sortType = 'minimumValue'; sortReverse = !sortReverse">
+                            Invest. minimo 
+                            <span ng-show="sortType == 'minimumValue' && !sortReverse" class="glyphicon glyphicon-triangle-bottom"></span>
+                            <span ng-show="sortType == 'minimumValue' && sortReverse" class="glyphicon glyphicon-triangle-top"></span>
+                          </a>
+                    </td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="row in list | orderBy:sortType:sortReverse">
+                    <td>{{ row.name }}</td>                    
+                    <td>{{ row.type.name }}</td>
+                    <td>{{ row.maturityDate }}</td>
+                    <td>{{ row.index.name }}</td>
+                    <td>R$ {{ row.value }}</td>
+                    <td>{{ row.currentInterestRate }}%</td>
+                    <td>R$ {{ row.minimumValue }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript" src="node_modules/angular/angular.js"></script>
+	<script type="text/javascript" src="js/vanilla.js"></script>
+
+</body>
+</html>
